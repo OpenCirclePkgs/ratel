@@ -9,9 +9,14 @@ jobs:
     steps:      
       - name: Check out ratel repo
         uses: actions/checkout@master
+        id: ratel
         with:
           repository: dgraph-io/ratel
           ref: "${{ steps.taginfo.outputs.tag }}"
+          
+      - name: Check-out
+        uses: actions/checkout@master
+        id: local
       
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -29,7 +34,7 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          file: ./Dockerfile
-          context: .
+          file: local/Dockerfile
+          context: ratel
           tags: |
             ${{ steps.taginfo.outputs.tag }}, latest
