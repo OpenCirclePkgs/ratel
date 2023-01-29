@@ -48,4 +48,4 @@ jobs:
           file: ./local/Dockerfile
           context: ./ratel
           tags: |
-            ${{ steps.taginfo.outputs.tag }}, latest
+            ${{ steps.taginfo.outputs.tag }}
