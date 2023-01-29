@@ -1,8 +1,10 @@
+######
 # Build Client
 ####################
-FROM node:14.17.0-alpine as client
+FROM node:14.17.0-buster as client
 
-RUN apk update && apk --no-cache --virtual build-dependencies add make git bash python3 gcc g++
+#RUN apk update && apk --no-cache --virtual build-dependencies add make git bash python3 gcc g++
+RUN apt-get update && apt-get install chromium -y
 
 # build package manifest layer
 RUN mkdir -p /ratel/client
@@ -32,12 +34,11 @@ RUN ./scripts/build.prod.sh --server
 ######
 # Final Image
 ####################
-FROM node:14.17.0-alpine as final
+FROM alpine:latest as final
 
 RUN apk add --no-cache ca-certificates
-RUN addgroup -g 2000 dgraph && \
-    adduser -u 2000 -G dgraph -s /bin/sh -D dgraph
-
+RUN addgroup -g 1000 dgraph && \
+    adduser -u 1000 -G dgraph -s /bin/sh -D dgraph
 # copy server artifact w/ embedded client artifact (bindata) to final stage
 COPY --from=server /ratel/build/ratel /usr/local/bin/dgraph-ratel
 EXPOSE 8000
