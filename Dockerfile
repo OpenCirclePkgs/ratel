@@ -36,7 +36,7 @@ FROM node:14.17.0-alpine as final
 
 RUN apk add --no-cache ca-certificates
 RUN addgroup -g 2000 dgraph && \
-    adduser -u 1000 -G dgraph -s /bin/sh -D dgraph
+    adduser -u 2000 -G dgraph -s /bin/sh -D dgraph
 
 # copy server artifact w/ embedded client artifact (bindata) to final stage
 COPY --from=server /ratel/build/ratel /usr/local/bin/dgraph-ratel
