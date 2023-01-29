@@ -32,9 +32,9 @@ RUN ./scripts/build.prod.sh --server
 ######
 # Final Image
 ####################
-FROM alpine:latest as final
+FROM node:14.17.0-alpine as final
 
-RUN apk add --no-cache ca-certificates chromium-chromedriver
+RUN apk add --no-cache ca-certificates
 RUN addgroup -g 1000 dgraph && \
     adduser -u 1000 -G dgraph -s /bin/sh -D dgraph
 # copy server artifact w/ embedded client artifact (bindata) to final stage
