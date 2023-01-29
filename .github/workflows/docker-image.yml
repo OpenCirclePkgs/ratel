@@ -37,5 +37,7 @@ jobs:
           push: true
           file: ./local/Dockerfile
           context: ./ratel
+          image: ${{ github.repository }}
+          registry: ghcr.io
           tags: |
             ${{ steps.taginfo.outputs.tag }}, latest
