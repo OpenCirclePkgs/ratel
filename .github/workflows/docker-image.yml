@@ -29,5 +29,7 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           push: true
+          file: ./Dockerfile
+          context: .
           tags: |
             ${{ steps.taginfo.outputs.tag }}, latest
