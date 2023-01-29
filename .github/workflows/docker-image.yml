@@ -1,0 +1,33 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+  
+jobs:     
+  build_multiarch:
+    runs-on: ubuntu-latest
+    steps:      
+      - name: Check out ratel repo
+        uses: actions/checkout@master
+        with:
+          repository: dgraph-io/ratel
+          ref: "${{ steps.taginfo.outputs.tag }}"
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: linux/amd64,linux/arm64
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          
+      - name: build & push image
+        uses: docker/build-push-action@v2
+        with:
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ steps.taginfo.outputs.tag }}, latest
